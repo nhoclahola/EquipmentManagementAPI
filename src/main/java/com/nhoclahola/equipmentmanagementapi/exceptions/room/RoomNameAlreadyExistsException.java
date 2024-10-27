@@ -4,6 +4,6 @@ public class RoomNameAlreadyExistsException extends RuntimeException
 {
     public RoomNameAlreadyExistsException()
     {
-        super("Room name already exists");
+        super("Tên phòng đã tồn tại");
     }
 }

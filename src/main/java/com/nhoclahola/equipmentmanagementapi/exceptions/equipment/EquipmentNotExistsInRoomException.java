@@ -4,6 +4,6 @@ public class EquipmentNotExistsInRoomException extends RuntimeException
 {
     public EquipmentNotExistsInRoomException()
     {
-        super("The equipment not exists in the room");
+        super("Thiết bị không tồn tại trong phòng");
     }
 }

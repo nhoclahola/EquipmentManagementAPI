@@ -4,6 +4,6 @@ public class RoomNotFountException extends RuntimeException
 {
     public RoomNotFountException()
     {
-        super("Room not found");
+        super("Không tìm thấy phòng");
     }
 }

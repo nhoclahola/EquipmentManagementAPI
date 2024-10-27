@@ -1,5 +1,6 @@
 package com.nhoclahola.equipmentmanagementapi.exceptions.handler;
 
+import com.nhoclahola.equipmentmanagementapi.exceptions.PageNumberNotValidException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasBeenProcessedException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestNotFoundException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.NotEnoughEquipmentAvailableException;
@@ -19,6 +20,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler
 {
+    @ExceptionHandler(PageNumberNotValidException.class)
+    public ResponseEntity<String> handlePageNumberNotValid(PageNumberNotValidException ex)
+    {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)  // 409 Conflict
+                .body(ex.getMessage());
+    }
+
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<String> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex)
     {

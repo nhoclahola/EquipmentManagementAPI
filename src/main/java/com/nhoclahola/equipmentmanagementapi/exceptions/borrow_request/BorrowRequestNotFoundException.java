@@ -4,6 +4,6 @@ public class BorrowRequestNotFoundException extends RuntimeException
 {
     public BorrowRequestNotFoundException()
     {
-        super("Borrow Request not found");
+        super("Phiếu đăng ký mượn không được tìm thấy");
     }
 }

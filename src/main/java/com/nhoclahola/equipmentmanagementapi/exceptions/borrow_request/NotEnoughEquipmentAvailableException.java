@@ -4,6 +4,6 @@ public class NotEnoughEquipmentAvailableException extends RuntimeException
 {
     public NotEnoughEquipmentAvailableException()
     {
-        super("Not enough equipment available");
+        super("Không đủ thiết bị khả dụng");
     }
 }

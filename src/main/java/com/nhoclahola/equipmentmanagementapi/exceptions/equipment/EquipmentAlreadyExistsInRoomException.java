@@ -4,6 +4,6 @@ public class EquipmentAlreadyExistsInRoomException extends RuntimeException
 {
     public EquipmentAlreadyExistsInRoomException()
     {
-        super("The equipment already exists in room");
+        super("Thiết bị đã tồn tại sẵn trong phòng");
     }
 }

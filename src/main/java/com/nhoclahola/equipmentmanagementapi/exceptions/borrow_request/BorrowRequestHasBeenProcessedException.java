@@ -4,6 +4,6 @@ public class BorrowRequestHasBeenProcessedException extends RuntimeException
 {
     public BorrowRequestHasBeenProcessedException()
     {
-        super("This borrow request has been proccessed");
+        super("Phiếu đăng ký mượn đang được xử lý");
     }
 }

@@ -4,6 +4,6 @@ public class UsernameAlreadyExistsException extends RuntimeException
 {
     public UsernameAlreadyExistsException()
     {
-        super("Username already exists");
+        super("Username đã tồn tại");
     }
 }

@@ -4,6 +4,6 @@ public class EquipmentNameAlreadyExistException extends RuntimeException
 {
     public EquipmentNameAlreadyExistException()
     {
-        super("The equipment name already exists");
+        super("Tên thiết bị đã tồn tại");
     }
 }

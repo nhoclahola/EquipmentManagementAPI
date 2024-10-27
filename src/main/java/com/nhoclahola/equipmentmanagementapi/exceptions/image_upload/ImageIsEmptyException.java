@@ -4,6 +4,6 @@ public class ImageIsEmptyException extends RuntimeException
 {
     public ImageIsEmptyException()
     {
-        super("The image is empty");
+        super("Ảnh rỗng");
     }
 }

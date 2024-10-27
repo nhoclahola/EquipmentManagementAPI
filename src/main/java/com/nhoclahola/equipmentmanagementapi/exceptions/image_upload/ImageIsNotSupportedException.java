@@ -4,6 +4,6 @@ public class ImageIsNotSupportedException extends RuntimeException
 {
     public ImageIsNotSupportedException()
     {
-        super("This image is not supported");
+        super("Ảnh không được hỗ trợ");
     }
 }
