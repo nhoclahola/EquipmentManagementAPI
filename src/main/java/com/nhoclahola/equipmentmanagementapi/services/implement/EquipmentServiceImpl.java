@@ -33,6 +33,12 @@ public class EquipmentServiceImpl implements EquipmentService
     private static final String EQUIPMENT_DIR = "/equipments/";
 
     @Override
+    public long count()
+    {
+        return equipmentRepository.count();
+    }
+
+    @Override
     public List<EquipmentResponse> findAllEquipments(int pageNumber)
     {
         Pageable pageable = PageRequest.of(pageNumber, 10);

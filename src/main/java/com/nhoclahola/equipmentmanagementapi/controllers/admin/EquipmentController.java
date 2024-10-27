@@ -7,6 +7,7 @@ import com.nhoclahola.equipmentmanagementapi.dto.equipment.request.EquipmentCrea
 import com.nhoclahola.equipmentmanagementapi.dto.equipment.request.EquipmentEditRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.equipment.response.EquipmentResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.Equipment;
+import com.nhoclahola.equipmentmanagementapi.exceptions.PageNumberNotValidException;
 import com.nhoclahola.equipmentmanagementapi.services.EquipmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +26,20 @@ public class EquipmentController
 {
     private final EquipmentService equipmentService;
 
+    @GetMapping("/equipments/count")
+    public ResponseEntity<Long> getUsersCount()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(equipmentService.count());
+    }
+
     @GetMapping("/equipments")
     public ResponseEntity<List<EquipmentResponse>> getAllEquipments(@RequestParam("page") int pageNumber)
     {
+        if (pageNumber <= 0)
+            throw new PageNumberNotValidException();
         return ResponseEntity.status(HttpStatus.OK)
-                .body(equipmentService.findAllEquipments(pageNumber));
+                .body(equipmentService.findAllEquipments(pageNumber - 1));
     }
 
     @GetMapping("/equipments/{id}")
@@ -73,7 +83,9 @@ public class EquipmentController
     @GetMapping("/equipments/all-quantities")
     public ResponseEntity<List<EquipmentWithTotalQuantityInAllRooms>> getAllEquipmentsWithAllQuantities(@RequestParam("page") int pageNumber)
     {
+        if (pageNumber <= 0)
+            throw new PageNumberNotValidException();
         return ResponseEntity.status(HttpStatus.OK)
-                .body(equipmentService.findAllEquipmentWithTotalQuantityInAllRooms(pageNumber));
+                .body(equipmentService.findAllEquipmentWithTotalQuantityInAllRooms(pageNumber - 1));
     }
 }

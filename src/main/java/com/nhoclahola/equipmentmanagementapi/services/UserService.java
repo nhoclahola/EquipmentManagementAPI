@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface UserService
 {
+    long count();
+
     List<User> findUsers(int pageNumber);
 
     User createUser(UserCreateRequest request);

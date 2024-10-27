@@ -3,6 +3,7 @@ package com.nhoclahola.equipmentmanagementapi.controllers.admin;
 import com.nhoclahola.equipmentmanagementapi.dto.user.request.UserCreateRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.user.request.UserEditRequest;
 import com.nhoclahola.equipmentmanagementapi.entities.User;
+import com.nhoclahola.equipmentmanagementapi.exceptions.PageNumberNotValidException;
 import com.nhoclahola.equipmentmanagementapi.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,19 @@ public class UserController
 {
     private final UserService userService;
 
+    @GetMapping("/users/count")
+    public ResponseEntity<Long> getUsersCount()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userService.count());
+    }
+
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers(@RequestParam("page") int pageNumber)
     {
-        List<User> users = userService.findUsers(pageNumber);
+        if (pageNumber <= 0)
+            throw new PageNumberNotValidException();
+        List<User> users = userService.findUsers(pageNumber - 1);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(users);
     }

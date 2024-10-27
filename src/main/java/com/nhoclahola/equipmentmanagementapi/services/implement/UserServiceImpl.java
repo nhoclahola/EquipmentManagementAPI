@@ -24,6 +24,12 @@ public class UserServiceImpl implements UserService
     private final UserMapper userMapper;
 
     @Override
+    public long count()
+    {
+        return userRepository.count();
+    }
+
+    @Override
     public List<User> findUsers(int pageNumber)
     {
         Pageable pageable = PageRequest.of(pageNumber, 10);

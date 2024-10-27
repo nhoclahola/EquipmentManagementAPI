@@ -40,7 +40,7 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long>
             "WHERE br.equipment.equipmentId = e.equipmentId AND br.status = 'APPROVED' AND br.isReturned = false), 0)) " +
             ") " +
             "FROM Equipment e " +
-            "JOIN e.roomEquipments re " +
+            "LEFT JOIN e.roomEquipments re " +      // To get all equipment which is not in any room
             "GROUP BY e.equipmentId, e.equipmentName, e.imageUrl")
     List<EquipmentWithTotalQuantityInAllRooms> findAllEquipmentsWithTotalQuantity(Pageable pageable);
 }

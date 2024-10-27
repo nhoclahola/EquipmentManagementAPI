@@ -14,6 +14,8 @@ import java.util.List;
 
 public interface EquipmentService
 {
+    long count();
+
     List<EquipmentResponse> findAllEquipments(int pageNumber);
 
     EquipmentResponse createEquipment(String equipmentName, MultipartFile image) throws IOException;
