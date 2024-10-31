@@ -24,6 +24,12 @@ public class RoomServiceImpl implements RoomService
     private final RoomMapper roomMapper;
 
     @Override
+    public long count()
+    {
+        return roomRepository.count();
+    }
+
+    @Override
     public List<RoomResponse> findAllRooms(int pageNumber)
     {
         Pageable pageable = PageRequest.of(pageNumber, 10);

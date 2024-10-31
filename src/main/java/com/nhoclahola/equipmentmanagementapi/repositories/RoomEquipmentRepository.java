@@ -6,11 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface RoomEquipmentRepository extends JpaRepository<RoomEquipment, Long>
 {
+    List<RoomEquipment> findByRoomRoomId(Long roomId);
+
     boolean existsByRoomRoomIdAndEquipmentEquipmentId(Long roomId, Long equipmentId);
 
     Optional<RoomEquipment> findByRoomRoomIdAndEquipmentEquipmentId(Long roomId, Long equipmentId);

@@ -8,12 +8,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class RoomEquipmentController
 {
     private final RoomEquipmentService roomEquipmentService;
+
+    @GetMapping("/rooms/{roomId}/equipments")
+    public ResponseEntity<List<RoomEquipmentResponse>> getRoomEquipmentByRoomId(@PathVariable Long roomId)
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomEquipmentService.findByRoomId(roomId));
+    }
+
+    @GetMapping("/rooms/{roomId}/equipments/{equipmentId}")
+    public ResponseEntity<Boolean> checkEquipmentIsInRoom(@PathVariable Long roomId, @PathVariable Long equipmentId)
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomEquipmentService.existsByRoomIdAndEquipmentId(roomId, equipmentId));
+    }
 
     @PostMapping("/rooms/{roomId}/add/{equipmentId}")
     public ResponseEntity<RoomEquipmentResponse> addEquipmentToRoom(@PathVariable Long roomId,

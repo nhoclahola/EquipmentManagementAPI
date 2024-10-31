@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface RoomService
 {
+    long count();
+
     List<RoomResponse> findAllRooms(int pageNumber);
 
     RoomResponse createRoom(RoomCreateRequest request);

@@ -14,6 +14,8 @@ import com.nhoclahola.equipmentmanagementapi.services.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoomEquipmentServiceImpl implements RoomEquipmentService
@@ -22,6 +24,20 @@ public class RoomEquipmentServiceImpl implements RoomEquipmentService
     private final RoomEquipmentMapper roomEquipmentMapper;
     private final RoomService roomService;
     private final EquipmentService equipmentService;
+
+
+    @Override
+    public List<RoomEquipmentResponse> findByRoomId(Long roomId)
+    {
+        List<RoomEquipment> roomEquipmentList = roomEquipmentRepository.findByRoomRoomId(roomId);
+        return roomEquipmentMapper.toListRoomEquipmentResponse(roomEquipmentList);
+    }
+
+    @Override
+    public boolean existsByRoomIdAndEquipmentId(Long roomId, Long equipmentId)
+    {
+        return roomEquipmentRepository.existsByRoomRoomIdAndEquipmentEquipmentId(roomId, equipmentId);
+    }
 
     @Override
     public RoomEquipmentResponse addEquipmentToRoom(Long roomId, Long equipmentId, int quantity)

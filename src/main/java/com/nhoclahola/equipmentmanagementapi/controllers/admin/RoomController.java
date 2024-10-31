@@ -4,6 +4,7 @@ import com.nhoclahola.equipmentmanagementapi.dto.room.request.RoomCreateRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.room.request.RoomEditRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.room.response.RoomResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.Room;
+import com.nhoclahola.equipmentmanagementapi.exceptions.PageNumberNotValidException;
 import com.nhoclahola.equipmentmanagementapi.services.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +21,20 @@ public class RoomController
 {
     private final RoomService roomService;
 
+    @GetMapping("/rooms/count")
+    public ResponseEntity<Long> getRoomsCount()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomService.count());
+    }
+
     @GetMapping("/rooms")
     public ResponseEntity<List<RoomResponse>> getAllRooms(@RequestParam("page") int pageNumber)
     {
+        if (pageNumber <= 0)
+            throw new PageNumberNotValidException();
         return ResponseEntity.status(HttpStatus.OK)
-                .body(roomService.findAllRooms(pageNumber));
+                .body(roomService.findAllRooms(pageNumber - 1));
     }
 
     @PostMapping("/rooms")
