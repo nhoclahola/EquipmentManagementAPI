@@ -1,6 +1,8 @@
 package com.nhoclahola.equipmentmanagementapi.services.implement;
 
+import com.nhoclahola.equipmentmanagementapi.dto.room_equipment.RoomEquipmentWithRemainQuantity;
 import com.nhoclahola.equipmentmanagementapi.dto.room_equipment.response.RoomEquipmentResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.room_equipment.response.RoomEquipmentWithRemainQuantityResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.Equipment;
 import com.nhoclahola.equipmentmanagementapi.entities.Room;
 import com.nhoclahola.equipmentmanagementapi.entities.RoomEquipment;
@@ -27,10 +29,10 @@ public class RoomEquipmentServiceImpl implements RoomEquipmentService
 
 
     @Override
-    public List<RoomEquipmentResponse> findByRoomId(Long roomId)
+    public List<RoomEquipmentWithRemainQuantityResponse> findByRoomId(Long roomId)
     {
-        List<RoomEquipment> roomEquipmentList = roomEquipmentRepository.findByRoomRoomId(roomId);
-        return roomEquipmentMapper.toListRoomEquipmentResponse(roomEquipmentList);
+        List<RoomEquipmentWithRemainQuantity> roomEquipmentList = roomEquipmentRepository.findRoomEquipmentsWithRemainQuantityByRoomId(roomId);
+        return roomEquipmentMapper.toListRoomEquipmentWithRemainQuantityResponse(roomEquipmentList);
     }
 
     @Override
@@ -72,10 +74,11 @@ public class RoomEquipmentServiceImpl implements RoomEquipmentService
     }
 
     @Override
-    public RoomEquipment findByRoomIdAndEquipmentId(Long roomId, Long equipmentId)
+    public RoomEquipmentWithRemainQuantityResponse findByRoomIdAndEquipmentId(Long roomId, Long equipmentId)
     {
-        return roomEquipmentRepository.findByRoomRoomIdAndEquipmentEquipmentId(roomId, equipmentId)
+        RoomEquipmentWithRemainQuantity roomEquipment = roomEquipmentRepository.findRoomEquipmentWithRemainQuantityByRoomIdAndEquipmentId(roomId, equipmentId)
                 .orElseThrow(() -> new EquipmentNotExistsInRoomException());
+        return roomEquipmentMapper.toRoomEquipmentWithRemainQuantityResponse(roomEquipment);
     }
 
     @Override

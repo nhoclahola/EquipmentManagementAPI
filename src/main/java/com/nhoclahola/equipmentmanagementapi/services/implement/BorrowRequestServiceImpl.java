@@ -6,6 +6,7 @@ import com.nhoclahola.equipmentmanagementapi.entities.BorrowRequest;
 import com.nhoclahola.equipmentmanagementapi.entities.Equipment;
 import com.nhoclahola.equipmentmanagementapi.entities.RequestStatus;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasBeenProcessedException;
+import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasNotBeenApprovedException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestNotFoundException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.NotEnoughEquipmentAvailableException;
 import com.nhoclahola.equipmentmanagementapi.mapper.BorrowRequestMapper;
@@ -14,6 +15,7 @@ import com.nhoclahola.equipmentmanagementapi.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -95,6 +97,16 @@ public class BorrowRequestServiceImpl implements BorrowRequestService
     }
 
     @Override
+    public BorrowRequestResponse markAsReturnedBorrowRequest(Long requestId)
+    {
+        BorrowRequest borrowRequest = this.findById(requestId);
+        if (!borrowRequest.getStatus().equals(RequestStatus.APPROVED))
+            throw new BorrowRequestHasNotBeenApprovedException();
+        borrowRequest.setReturned(true);
+        return borrowRequestMapper.toBorrowRequestResponse(borrowRequestRepository.save(borrowRequest));
+    }
+
+    @Override
     public BorrowRequest findById(Long requestId)
     {
         return borrowRequestRepository.findById(requestId)
@@ -102,9 +114,23 @@ public class BorrowRequestServiceImpl implements BorrowRequestService
     }
 
     @Override
+    public long count()
+    {
+        return borrowRequestRepository.count();
+    }
+
+    @Override
     public List<BorrowRequestResponse> findAllBorrowRequest(int pageNumber)
     {
         Pageable pageable = PageRequest.of(pageNumber, 10);
+        List<BorrowRequest> borrowRequestList = borrowRequestRepository.findAll(pageable).stream().toList();
+        return borrowRequestMapper.toBorrowRequestResponseList(borrowRequestList);
+    }
+
+    @Override
+    public List<BorrowRequestResponse> findAllLatestBorrowRequest(int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("requestDate").descending());
         List<BorrowRequest> borrowRequestList = borrowRequestRepository.findAll(pageable).stream().toList();
         return borrowRequestMapper.toBorrowRequestResponseList(borrowRequestList);
     }
