@@ -1,6 +1,7 @@
 package com.nhoclahola.equipmentmanagementapi.controllers.admin;
 
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.BorrowRequestResponse;
+import com.nhoclahola.equipmentmanagementapi.exceptions.PageNumberNotValidException;
 import com.nhoclahola.equipmentmanagementapi.services.BorrowRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,10 +31,26 @@ public class BorrowRequestController
                 .body(borrowRequestService.rejectBorrowRequest(requestId));
     }
 
+    @PutMapping("/borrow-request/{requestId}/returned")
+    public ResponseEntity<BorrowRequestResponse> markAsReturnedBorrowRequest(@PathVariable Long requestId)
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(borrowRequestService.markAsReturnedBorrowRequest(requestId));
+    }
+
+    @GetMapping("/borrow-request/count")
+    public ResponseEntity<Long> getBorrowRequestCount()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(borrowRequestService.count());
+    }
+
     @GetMapping("/borrow-request")
     public ResponseEntity<List<BorrowRequestResponse>> getAllBorrowRequest(@RequestParam("page") int pageNumber)
     {
+        if (pageNumber <= 0)
+            throw new PageNumberNotValidException();
         return ResponseEntity.status(HttpStatus.OK)
-                .body(borrowRequestService.findAllBorrowRequest(pageNumber));
+                .body(borrowRequestService.findAllLatestBorrowRequest(pageNumber - 1));
     }
 }

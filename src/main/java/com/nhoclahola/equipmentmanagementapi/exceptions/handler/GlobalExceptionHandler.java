@@ -2,6 +2,7 @@ package com.nhoclahola.equipmentmanagementapi.exceptions.handler;
 
 import com.nhoclahola.equipmentmanagementapi.exceptions.PageNumberNotValidException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasBeenProcessedException;
+import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasNotBeenApprovedException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestNotFoundException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.NotEnoughEquipmentAvailableException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentAlreadyExistsInRoomException;
@@ -110,6 +111,14 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(BorrowRequestHasBeenProcessedException.class)
     public ResponseEntity<String> handleBorrowRequestHasBeenProcessed(BorrowRequestHasBeenProcessedException ex)
+    {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(BorrowRequestHasNotBeenApprovedException.class)
+    public ResponseEntity<String> handleBorrowRequestHasNotBeenApproved(BorrowRequestHasNotBeenApprovedException ex)
     {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)

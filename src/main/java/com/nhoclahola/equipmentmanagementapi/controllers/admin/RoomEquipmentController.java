@@ -1,6 +1,7 @@
 package com.nhoclahola.equipmentmanagementapi.controllers.admin;
 
 import com.nhoclahola.equipmentmanagementapi.dto.room_equipment.response.RoomEquipmentResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.room_equipment.response.RoomEquipmentWithRemainQuantityResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.RoomEquipment;
 import com.nhoclahola.equipmentmanagementapi.services.RoomEquipmentService;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,20 @@ public class RoomEquipmentController
     private final RoomEquipmentService roomEquipmentService;
 
     @GetMapping("/rooms/{roomId}/equipments")
-    public ResponseEntity<List<RoomEquipmentResponse>> getRoomEquipmentByRoomId(@PathVariable Long roomId)
+    public ResponseEntity<List<RoomEquipmentWithRemainQuantityResponse>> getRoomEquipmentByRoomId(@PathVariable Long roomId)
     {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(roomEquipmentService.findByRoomId(roomId));
     }
 
     @GetMapping("/rooms/{roomId}/equipments/{equipmentId}")
+    public ResponseEntity<RoomEquipmentWithRemainQuantityResponse> getEquipmentInRoom(@PathVariable Long roomId, @PathVariable Long equipmentId)
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomEquipmentService.findByRoomIdAndEquipmentId(roomId, equipmentId));
+    }
+
+    @GetMapping("/rooms/{roomId}/equipments/{equipmentId}/check")
     public ResponseEntity<Boolean> checkEquipmentIsInRoom(@PathVariable Long roomId, @PathVariable Long equipmentId)
     {
         return ResponseEntity.status(HttpStatus.OK)

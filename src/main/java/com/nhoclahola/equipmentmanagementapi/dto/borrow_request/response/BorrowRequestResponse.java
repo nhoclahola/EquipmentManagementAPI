@@ -2,6 +2,7 @@ package com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response;
 
 import com.nhoclahola.equipmentmanagementapi.dto.equipment.response.EquipmentResponse;
 import com.nhoclahola.equipmentmanagementapi.dto.room.response.RoomResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.user.response.UserResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.Equipment;
 import com.nhoclahola.equipmentmanagementapi.entities.RequestStatus;
 import com.nhoclahola.equipmentmanagementapi.entities.Room;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 public class BorrowRequestResponse
 {
     private Long id;
+    private UserResponse user;
     private EquipmentResponse equipment;
     private RoomResponse room;
     private int quantity;
