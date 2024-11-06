@@ -19,4 +19,8 @@ public interface UserService
     User editUser(Long userId, UserEditRequest request);
 
     User findById(Long userId);
+
+    long countSearchUser(String query);
+
+    List<User> searchUser(String query, int pageNumber);
 }

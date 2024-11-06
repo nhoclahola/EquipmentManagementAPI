@@ -57,4 +57,20 @@ public class UserController
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userService.editUser(id, request));
     }
+
+    @GetMapping("/users/search")
+    public ResponseEntity<List<User>> getSearchUser(@RequestParam("query") String query, @RequestParam("page") int pageNumber)
+    {
+        if (pageNumber <= 0)
+            throw new PageNumberNotValidException();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userService.searchUser(query, pageNumber - 1));
+    }
+
+    @GetMapping("/users/search/count")
+    public ResponseEntity<Long> getCountSearchUser(@RequestParam("query") String query)
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userService.countSearchUser(query));
+    }
 }

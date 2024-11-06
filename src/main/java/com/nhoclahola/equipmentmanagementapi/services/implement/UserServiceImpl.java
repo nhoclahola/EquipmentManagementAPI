@@ -72,4 +72,17 @@ public class UserServiceImpl implements UserService
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException());
     }
+
+    @Override
+    public long countSearchUser(String query)
+    {
+        return userRepository.countSearchUser(query);
+    }
+
+    @Override
+    public List<User> searchUser(String query, int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        return userRepository.searchUser(query, pageable).stream().toList();
+    }
 }
