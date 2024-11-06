@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = RoomMapper.class) // Roomapper to use toRoomResponse method
+@Mapper(componentModel = "spring") // Roomapper to use toRoomResponse method
 public interface BorrowRequestMapper
 {
     @Mapping(source = "returned", target = "isReturned")

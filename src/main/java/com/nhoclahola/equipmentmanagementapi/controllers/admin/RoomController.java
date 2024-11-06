@@ -3,6 +3,7 @@ package com.nhoclahola.equipmentmanagementapi.controllers.admin;
 import com.nhoclahola.equipmentmanagementapi.dto.room.request.RoomCreateRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.room.request.RoomEditRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.room.response.RoomResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.room.response.RoomWithStatusResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.Room;
 import com.nhoclahola.equipmentmanagementapi.exceptions.PageNumberNotValidException;
 import com.nhoclahola.equipmentmanagementapi.services.RoomService;
@@ -29,7 +30,7 @@ public class RoomController
     }
 
     @GetMapping("/rooms")
-    public ResponseEntity<List<RoomResponse>> getAllRooms(@RequestParam("page") int pageNumber)
+    public ResponseEntity<List<RoomWithStatusResponse>> getAllRooms(@RequestParam("page") int pageNumber)
     {
         if (pageNumber <= 0)
             throw new PageNumberNotValidException();

@@ -3,6 +3,7 @@ package com.nhoclahola.equipmentmanagementapi.services.implement;
 import com.nhoclahola.equipmentmanagementapi.dto.room.request.RoomCreateRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.room.request.RoomEditRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.room.response.RoomResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.room.response.RoomWithStatusResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.Room;
 import com.nhoclahola.equipmentmanagementapi.exceptions.room.RoomNameAlreadyExistsException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.room.RoomNotFountException;
@@ -30,11 +31,11 @@ public class RoomServiceImpl implements RoomService
     }
 
     @Override
-    public List<RoomResponse> findAllRooms(int pageNumber)
+    public List<RoomWithStatusResponse> findAllRooms(int pageNumber)
     {
         Pageable pageable = PageRequest.of(pageNumber, 10);
-        List<Room> roomList = roomRepository.findAll(pageable).stream().toList();
-        return roomMapper.toListRoomResponse(roomList);
+        List<RoomWithStatusResponse> roomList = roomRepository.findAllRoomsWithBorrowedStatus(pageable).stream().toList();
+        return roomList;
     }
 
     @Override
