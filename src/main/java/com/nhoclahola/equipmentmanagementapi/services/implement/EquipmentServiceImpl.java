@@ -121,4 +121,17 @@ public class EquipmentServiceImpl implements EquipmentService
         Pageable pageable = PageRequest.of(pageNumber, 10);
         return equipmentRepository.findAllEquipmentsWithTotalQuantity(pageable);
     }
+
+    @Override
+    public long countSearchEquipments(String query)
+    {
+        return equipmentRepository.countSearchEquipments(query);
+    }
+
+    @Override
+    public List<EquipmentWithTotalQuantityInAllRooms> searchEquipmentWithTotalQuantityInAllRooms(String query, int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        return equipmentRepository.searchEquipmentsWithTotalQuantity(query, pageable);
+    }
 }

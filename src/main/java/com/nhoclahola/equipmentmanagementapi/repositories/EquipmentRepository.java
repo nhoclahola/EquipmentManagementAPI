@@ -43,4 +43,21 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long>
             "LEFT JOIN e.roomEquipments re " +      // To get all equipment which is not in any room
             "GROUP BY e.equipmentId, e.equipmentName, e.imageUrl")
     List<EquipmentWithTotalQuantityInAllRooms> findAllEquipmentsWithTotalQuantity(Pageable pageable);
+
+    @Query("SELECT new com.nhoclahola.equipmentmanagementapi.dto.equipment.EquipmentWithTotalQuantityInAllRooms( " +
+            "e.equipmentId, e.equipmentName, e.imageUrl, " +
+            "SUM(re.quantity), " +
+            "(SUM(re.quantity) - COALESCE((SELECT SUM(br.quantity) FROM BorrowRequest br " +
+            "WHERE br.equipment.equipmentId = e.equipmentId AND br.status = 'APPROVED' AND br.isReturned = false), 0)) " +
+            ") " +
+            "FROM Equipment e " +
+            "LEFT JOIN e.roomEquipments re " + // To get all equipment which is not in any room
+            "WHERE e.equipmentName LIKE %:query% " +
+            "GROUP BY e.equipmentId, e.equipmentName, e.imageUrl")
+    List<EquipmentWithTotalQuantityInAllRooms> searchEquipmentsWithTotalQuantity(@Param("query") String query, Pageable pageable);
+
+    @Query("SELECT COUNT(e) " +
+            "FROM Equipment e " +
+            "WHERE e.equipmentName LIKE %:query%")
+    long countSearchEquipments(@Param("query") String query);
 }

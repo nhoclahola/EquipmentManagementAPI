@@ -11,6 +11,7 @@ import com.nhoclahola.equipmentmanagementapi.mapper.RoomMapper;
 import com.nhoclahola.equipmentmanagementapi.repositories.RoomRepository;
 import com.nhoclahola.equipmentmanagementapi.services.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -72,5 +73,35 @@ public class RoomServiceImpl implements RoomService
     {
         return roomRepository.findById(roomId)
                 .orElseThrow(() -> new RoomNotFountException());
+    }
+
+    @Override
+    public long countSearchRooms(String query)
+    {
+        return roomRepository.countSearchRooms(query);
+    }
+
+    @Override
+    public List<RoomWithStatusResponse> searchRooms(String query, int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        List<RoomWithStatusResponse> roomList = roomRepository.searchAllRoomsWithBorrowedStatus(query, pageable).stream().toList();
+        return roomList;
+    }
+
+    @Override
+    public Page<RoomWithStatusResponse> findAllRoomsPage(int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        Page<RoomWithStatusResponse> roomList = roomRepository.findAllRoomsWithBorrowedStatusPage(pageable);
+        return roomList;
+    }
+
+    @Override
+    public Page<RoomWithStatusResponse> searchRoomsPage(String query, int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        Page<RoomWithStatusResponse> roomList = roomRepository.searchAllRoomsWithBorrowedStatusPage(query, pageable);
+        return roomList;
     }
 }

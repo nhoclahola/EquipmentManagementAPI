@@ -1,4 +1,4 @@
-package com.nhoclahola.equipmentmanagementapi.controllers.user.borrow_request;
+package com.nhoclahola.equipmentmanagementapi.controllers.user;
 
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.request.BorrowRequestRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.BorrowRequestResponse;

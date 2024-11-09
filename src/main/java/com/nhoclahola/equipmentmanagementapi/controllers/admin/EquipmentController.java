@@ -27,7 +27,7 @@ public class EquipmentController
     private final EquipmentService equipmentService;
 
     @GetMapping("/equipments/count")
-    public ResponseEntity<Long> getUsersCount()
+    public ResponseEntity<Long> getEquipmentCount()
     {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(equipmentService.count());
@@ -87,5 +87,21 @@ public class EquipmentController
             throw new PageNumberNotValidException();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(equipmentService.findAllEquipmentWithTotalQuantityInAllRooms(pageNumber - 1));
+    }
+
+    @GetMapping("/equipments/search/all-quantities")
+    public ResponseEntity<List<EquipmentWithTotalQuantityInAllRooms>> searchAllEquipmentsWithAllQuantities(@RequestParam("query") String query, @RequestParam("page") int pageNumber)
+    {
+        if (pageNumber <= 0)
+            throw new PageNumberNotValidException();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(equipmentService.searchEquipmentWithTotalQuantityInAllRooms(query, pageNumber - 1));
+    }
+
+    @GetMapping("/equipments/search/count")
+    public ResponseEntity<Long> getCountSearchEquipments(@RequestParam("query") String query)
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(equipmentService.countSearchEquipments(query));
     }
 }

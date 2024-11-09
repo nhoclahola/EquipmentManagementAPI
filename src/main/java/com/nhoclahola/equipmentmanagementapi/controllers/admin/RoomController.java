@@ -58,4 +58,20 @@ public class RoomController
         return ResponseEntity.status(HttpStatus.OK)
                 .body(roomService.editRoom(id, request));
     }
+
+    @GetMapping("/rooms/search")
+    public ResponseEntity<List<RoomWithStatusResponse>> searchRooms(@RequestParam("query") String query, @RequestParam("page") int pageNumber)
+    {
+        if (pageNumber <= 0)
+            throw new PageNumberNotValidException();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomService.searchRooms(query, pageNumber - 1));
+    }
+
+    @GetMapping("/rooms/search/count")
+    public ResponseEntity<Long> getCountSearchRooms(@RequestParam("query") String query)
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomService.countSearchRooms(query));
+    }
 }

@@ -14,6 +14,9 @@ import com.nhoclahola.equipmentmanagementapi.services.EquipmentService;
 import com.nhoclahola.equipmentmanagementapi.services.RoomEquipmentService;
 import com.nhoclahola.equipmentmanagementapi.services.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -85,5 +88,21 @@ public class RoomEquipmentServiceImpl implements RoomEquipmentService
     public int findTotalQuantityByRoomAndEquipment(Long roomId, Long equipmentId)
     {
         return roomEquipmentRepository.findTotalQuantityByRoomAndEquipment(roomId, equipmentId);
+    }
+
+    @Override
+    public Page<RoomEquipmentWithRemainQuantityResponse> findAllRoomEquipmentsWithRemainQuantity(int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        Page<RoomEquipmentWithRemainQuantity> roomEquipmentList = roomEquipmentRepository.findAllRoomEquipmentsWithRemainQuantity(pageable);
+        return roomEquipmentMapper.toPageRoomEquipmentWithRemainQuantityResponse(roomEquipmentList);
+    }
+
+    @Override
+    public Page<RoomEquipmentWithRemainQuantityResponse> searchRoomEquipmentsWithRemainQuantity(String query, int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        Page<RoomEquipmentWithRemainQuantity> roomEquipmentList = roomEquipmentRepository.searchRoomEquipmentsWithRemainQuantity(query, pageable);
+        return roomEquipmentMapper.toPageRoomEquipmentWithRemainQuantityResponse(roomEquipmentList);
     }
 }

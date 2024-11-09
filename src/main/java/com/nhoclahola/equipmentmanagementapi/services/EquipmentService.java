@@ -33,4 +33,8 @@ public interface EquipmentService
     List<EquipmentWithQuantity> findRoomsEquipments(Long roomId);
 
     List<EquipmentWithTotalQuantityInAllRooms> findAllEquipmentWithTotalQuantityInAllRooms(int pageNumber);
+
+    long countSearchEquipments(String query);
+
+    List<EquipmentWithTotalQuantityInAllRooms> searchEquipmentWithTotalQuantityInAllRooms(String query, int pageNumber);
 }

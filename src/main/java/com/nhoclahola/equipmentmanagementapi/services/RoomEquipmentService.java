@@ -3,6 +3,7 @@ package com.nhoclahola.equipmentmanagementapi.services;
 import com.nhoclahola.equipmentmanagementapi.dto.room_equipment.response.RoomEquipmentResponse;
 import com.nhoclahola.equipmentmanagementapi.dto.room_equipment.response.RoomEquipmentWithRemainQuantityResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.RoomEquipment;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -21,4 +22,8 @@ public interface RoomEquipmentService
     RoomEquipmentWithRemainQuantityResponse findByRoomIdAndEquipmentId(Long roomId, Long equipmentId);
 
     int findTotalQuantityByRoomAndEquipment(Long roomId, Long equipmentId);
+
+    Page<RoomEquipmentWithRemainQuantityResponse> findAllRoomEquipmentsWithRemainQuantity(int pageNumber);
+
+    Page<RoomEquipmentWithRemainQuantityResponse> searchRoomEquipmentsWithRemainQuantity(String query, int pageNumber);
 }
