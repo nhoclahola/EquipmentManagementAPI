@@ -20,7 +20,10 @@ public interface FileUploadService
     {
         String absolutePath = ABSOLUTE_PATH + path;
         // Create new unique file name
-        String filePath = Paths.get(absolutePath, file.getOriginalFilename()).toString();
+        String fileHexName = UUID.randomUUID().toString().replace("-", "");
+        String extension = Objects.requireNonNull(file.getOriginalFilename())
+                .substring(file.getOriginalFilename().lastIndexOf("."));
+        String filePath = Paths.get(absolutePath, fileHexName + extension).toString();
         File targetFile = new File(filePath);
 
         // Create folder if it not exist
@@ -28,7 +31,7 @@ public interface FileUploadService
             targetFile.getParentFile().mkdirs();
         file.transferTo(targetFile);
 
-        return (UPLOAD_DIR + path + file.getOriginalFilename()).replaceAll("/+", "/");
+        return (UPLOAD_DIR + path + fileHexName + extension).replaceAll("/+", "/");
     }
 
     public default boolean deleteFile(String path) throws IOException

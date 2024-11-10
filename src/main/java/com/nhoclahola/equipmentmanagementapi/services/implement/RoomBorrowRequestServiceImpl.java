@@ -126,9 +126,7 @@ public class RoomBorrowRequestServiceImpl implements RoomBorrowRequestService
     public UserInfoRoomBorrowRequestResponse findUserInfoBorrowRequest()
     {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        var i = roomBorrowRequestRepository.findUserInfoBorrowRequest(username);
-        System.out.println(i.getUserId());
-        return i;
+        return roomBorrowRequestRepository.findUserInfoBorrowRequest(username);
     }
 
     @Override
