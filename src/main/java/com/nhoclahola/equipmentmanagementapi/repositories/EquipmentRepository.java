@@ -18,7 +18,9 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long>
 {
     boolean existsByEquipmentName(String equipmentName);
 
-    @Query("SELECT new com.nhoclahola.equipmentmanagementapi.dto.equipment.EquipmentWithQuantity(e.equipmentId, e.equipmentName, e.imageUrl, " +
+    boolean existsByEquipmentNameAndEquipmentIdNot(String equipmentName, Long equipmentId);
+
+    @Query("SELECT new com.nhoclahola.equipmentmanagementapi.dto.equipment.EquipmentWithQuantity(e.equipmentId, e.equipmentName, e.brandName, e.description, e.imageUrl, " +
             "re.quantity, re.quantity - COALESCE(SUM(br.quantity), 0)) " +
             "FROM Equipment e " +
             "JOIN e.roomEquipments re " +
@@ -34,7 +36,7 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long>
 //    List<EquipmentWithTotalQuantityInAllRooms> findAllEquipmentsWithTotalQuantity(Pageable pageable);
 
     @Query("SELECT new com.nhoclahola.equipmentmanagementapi.dto.equipment.EquipmentWithTotalQuantityInAllRooms( " +
-            "e.equipmentId, e.equipmentName, e.imageUrl, " +
+            "e.equipmentId, e.equipmentName, e.brandName, e.description, e.imageUrl, " +
             "SUM(re.quantity), " +
             "(SUM(re.quantity) - COALESCE((SELECT SUM(br.quantity) FROM BorrowRequest br " +
             "WHERE br.equipment.equipmentId = e.equipmentId AND br.status = 'APPROVED' AND br.isReturned = false), 0)) " +
@@ -45,7 +47,7 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long>
     List<EquipmentWithTotalQuantityInAllRooms> findAllEquipmentsWithTotalQuantity(Pageable pageable);
 
     @Query("SELECT new com.nhoclahola.equipmentmanagementapi.dto.equipment.EquipmentWithTotalQuantityInAllRooms( " +
-            "e.equipmentId, e.equipmentName, e.imageUrl, " +
+            "e.equipmentId, e.equipmentName, e.brandName, e.description, e.imageUrl, " +
             "SUM(re.quantity), " +
             "(SUM(re.quantity) - COALESCE((SELECT SUM(br.quantity) FROM BorrowRequest br " +
             "WHERE br.equipment.equipmentId = e.equipmentId AND br.status = 'APPROVED' AND br.isReturned = false), 0)) " +

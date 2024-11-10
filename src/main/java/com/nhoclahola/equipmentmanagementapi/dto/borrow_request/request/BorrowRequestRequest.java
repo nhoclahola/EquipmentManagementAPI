@@ -13,7 +13,6 @@ public class BorrowRequestRequest
 {
     private Long roomId;
     private Long equipmentId;
-    private Long userId;
     private int quantity;
     private LocalDate returnDate;
 }

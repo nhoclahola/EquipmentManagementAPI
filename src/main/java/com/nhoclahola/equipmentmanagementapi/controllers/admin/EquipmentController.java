@@ -51,10 +51,12 @@ public class EquipmentController
 
     @PostMapping("/equipments")
     public ResponseEntity<EquipmentResponse> createCategory(@RequestPart String equipmentName,
+                                                            @RequestPart(required = false) String brandName,
+                                                            @RequestPart(required = false) String description,
                                                             @RequestPart(required = false) MultipartFile image) throws IOException
     {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(equipmentService.createEquipment(equipmentName, image));
+                .body(equipmentService.createEquipment(equipmentName, brandName, description, image));
     }
 
     @DeleteMapping("/equipments/{id}")
@@ -66,11 +68,13 @@ public class EquipmentController
 
     @PutMapping("/equipments/{id}")
     public ResponseEntity<EquipmentResponse> editCategory(@PathVariable Long id,
-                                                          @RequestPart String equipmentName,
+                                                          @RequestPart(required = false) String equipmentName,
+                                                          @RequestPart(required = false) String brandName,
+                                                          @RequestPart(required = false) String description,
                                                           @RequestPart(required = false) MultipartFile image) throws IOException
     {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(equipmentService.editEquipment(id, equipmentName, image));
+                .body(equipmentService.editEquipment(id, equipmentName, brandName, description, image));
     }
 
     @GetMapping("/equipments/room/{roomId}")

@@ -1,10 +1,8 @@
 package com.nhoclahola.equipmentmanagementapi.exceptions.handler;
 
 import com.nhoclahola.equipmentmanagementapi.exceptions.PageNumberNotValidException;
-import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasBeenProcessedException;
-import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasNotBeenApprovedException;
-import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestNotFoundException;
-import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.NotEnoughEquipmentAvailableException;
+import com.nhoclahola.equipmentmanagementapi.exceptions.auth.InvalidUserNameOrPasswordException;
+import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.*;
 import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentAlreadyExistsInRoomException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentNameAlreadyExistException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentNotExistsInRoomException;
@@ -21,6 +19,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler
 {
+    @ExceptionHandler(InvalidUserNameOrPasswordException.class)
+    public ResponseEntity<String> handleInvalidUserNameOrPassword(InvalidUserNameOrPasswordException ex)
+    {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)  // 401
+                .body(ex.getMessage());
+    }
+
     @ExceptionHandler(PageNumberNotValidException.class)
     public ResponseEntity<String> handlePageNumberNotValid(PageNumberNotValidException ex)
     {
@@ -119,6 +125,14 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(BorrowRequestHasNotBeenApprovedException.class)
     public ResponseEntity<String> handleBorrowRequestHasNotBeenApproved(BorrowRequestHasNotBeenApprovedException ex)
+    {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(RoomHasBeenBorrowedException.class)
+    public ResponseEntity<String> handleBorrowRequestHasNotBeenApproved(RoomHasBeenBorrowedException ex)
     {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)

@@ -2,6 +2,7 @@ package com.nhoclahola.equipmentmanagementapi.services;
 
 import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.request.RoomBorrowRequestRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.response.RoomBorrowRequestResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.response.UserInfoRoomBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.RoomBorrowRequest;
 
 import java.util.List;
@@ -24,4 +25,8 @@ public interface RoomBorrowRequestService
     List<RoomBorrowRequestResponse> findAllBorrowRequest(int pageNumber);
 
     List<RoomBorrowRequestResponse> findAllLatestBorrowRequest(int pageNumber);
+
+    UserInfoRoomBorrowRequestResponse findUserInfoBorrowRequest();
+
+    long countPendingBorrowRequest();
 }

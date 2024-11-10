@@ -12,6 +12,5 @@ import java.time.LocalDate;
 public class RoomBorrowRequestRequest
 {
     private Long roomId;
-    private Long userId;
     private LocalDate returnDate;
 }

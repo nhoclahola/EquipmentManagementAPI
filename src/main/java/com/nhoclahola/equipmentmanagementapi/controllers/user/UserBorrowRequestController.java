@@ -2,6 +2,7 @@ package com.nhoclahola.equipmentmanagementapi.controllers.user;
 
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.request.BorrowRequestRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.BorrowRequestResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.UserInfoBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.services.BorrowRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,5 +20,12 @@ public class UserBorrowRequestController
 
         BorrowRequestResponse borrowRequest = borrowRequestService.createBorrowRequest(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(borrowRequest);
+    }
+
+    @GetMapping("/borrow-request/me")
+    public ResponseEntity<UserInfoBorrowRequestResponse> findUserInfoBorrowRequest()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(borrowRequestService.findUserInfoBorrowRequest());
     }
 }

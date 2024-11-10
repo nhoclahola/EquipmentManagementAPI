@@ -2,9 +2,11 @@ package com.nhoclahola.equipmentmanagementapi.services.implement;
 
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.request.BorrowRequestRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.BorrowRequestResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.UserInfoBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.BorrowRequest;
 import com.nhoclahola.equipmentmanagementapi.entities.Equipment;
 import com.nhoclahola.equipmentmanagementapi.entities.RequestStatus;
+import com.nhoclahola.equipmentmanagementapi.entities.User;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasBeenProcessedException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasNotBeenApprovedException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestNotFoundException;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,6 +38,10 @@ public class BorrowRequestServiceImpl implements BorrowRequestService
     @Override
     public BorrowRequestResponse createBorrowRequest(BorrowRequestRequest request)
     {
+        // Check user
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+
         Equipment equipment = equipmentService.findById(request.getEquipmentId());
         // Tính tổng số lượng thiết bị trong phòng từ RoomEquipment
         int totalQuantityInRoom = roomEquipmentService
@@ -51,7 +58,7 @@ public class BorrowRequestServiceImpl implements BorrowRequestService
         // Nếu còn đủ số lượng, tạo BorrowRequest mới
         BorrowRequest borrowRequest = BorrowRequest.builder()
                 .equipment(equipment)
-                .user(userService.findById(request.getUserId()))
+                .user(user)
                 .room(roomService.findById(request.getRoomId())) // Không cần tìm lại Room vì roomId đã có
                 .quantity(request.getQuantity())
                 .requestDate(LocalDate.now())  // Ngày tạo yêu cầu
@@ -130,8 +137,21 @@ public class BorrowRequestServiceImpl implements BorrowRequestService
     @Override
     public List<BorrowRequestResponse> findAllLatestBorrowRequest(int pageNumber)
     {
-        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("requestDate").descending());
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
         List<BorrowRequest> borrowRequestList = borrowRequestRepository.findAll(pageable).stream().toList();
         return borrowRequestMapper.toBorrowRequestResponseList(borrowRequestList);
+    }
+
+    @Override
+    public UserInfoBorrowRequestResponse findUserInfoBorrowRequest()
+    {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return borrowRequestRepository.findUserInfoBorrowRequest(username);
+    }
+
+    @Override
+    public long countPendingBorrowRequest()
+    {
+        return borrowRequestRepository.countPendingBorrowRequest();
     }
 }

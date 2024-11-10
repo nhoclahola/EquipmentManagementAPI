@@ -16,6 +16,8 @@ public class EquipmentWithRooms
 {
     private Long equipmentId;
     private String equipmentName;
+    private String brandName;
+    private String description;
     private String imageUrl;
     private List<RoomResponse> rooms;
 }

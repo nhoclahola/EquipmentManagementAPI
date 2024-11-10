@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface RoomEquipmentService
 {
+    long countAll();
+
     List<RoomEquipmentWithRemainQuantityResponse> findByRoomId(Long roomId);
 
     boolean existsByRoomIdAndEquipmentId(Long roomId, Long equipmentId);

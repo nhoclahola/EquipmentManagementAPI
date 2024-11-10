@@ -64,4 +64,11 @@ public class RoomEquipmentController
         roomEquipmentService.deleteEquipmentInRoom(roomId, equipmentId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/room-equipments/count")
+    public ResponseEntity<Long> countAll()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomEquipmentService.countAll());
+    }
 }

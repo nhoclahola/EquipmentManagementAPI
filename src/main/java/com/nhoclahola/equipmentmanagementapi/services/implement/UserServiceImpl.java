@@ -2,6 +2,7 @@ package com.nhoclahola.equipmentmanagementapi.services.implement;
 
 import com.nhoclahola.equipmentmanagementapi.dto.user.request.UserCreateRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.user.request.UserEditRequest;
+import com.nhoclahola.equipmentmanagementapi.dto.user.response.UserResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.Role;
 import com.nhoclahola.equipmentmanagementapi.entities.User;
 import com.nhoclahola.equipmentmanagementapi.exceptions.user.UserNotFoundException;
@@ -12,6 +13,7 @@ import com.nhoclahola.equipmentmanagementapi.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,6 +73,21 @@ public class UserServiceImpl implements UserService
     {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException());
+    }
+
+    @Override
+    public User findByUsername(String username)
+    {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException());
+    }
+
+    @Override
+    public UserResponse findUserFromToken()
+    {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = this.findByUsername(username);
+        return userMapper.toUserResponse(user);
     }
 
     @Override

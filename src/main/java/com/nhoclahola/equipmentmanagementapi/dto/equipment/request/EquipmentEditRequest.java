@@ -10,5 +10,7 @@ import lombok.*;
 public class EquipmentEditRequest
 {
     private String equipmentName;
+    private String brandName;
+    private String description;
     private String imageUrl;
 }

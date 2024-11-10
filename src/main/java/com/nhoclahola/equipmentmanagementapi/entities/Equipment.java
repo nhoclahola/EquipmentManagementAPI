@@ -18,8 +18,14 @@ public class Equipment
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long equipmentId;
     private String equipmentName;
+    private String brandName;
+    private String description;
     private String imageUrl;
 
-    @OneToMany(mappedBy = "equipment")
+    // When remove a equipment which already has roomEquipment, it will also remove roomEquipment in database
+    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RoomEquipment> roomEquipments;
+
+    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BorrowRequest> borrowRequests;
 }

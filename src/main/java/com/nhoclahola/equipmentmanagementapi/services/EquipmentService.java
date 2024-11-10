@@ -18,11 +18,11 @@ public interface EquipmentService
 
     List<EquipmentResponse> findAllEquipments(int pageNumber);
 
-    EquipmentResponse createEquipment(String equipmentName, MultipartFile image) throws IOException;
+    EquipmentResponse createEquipment(String equipmentName, String brandName, String description, MultipartFile image) throws IOException;
 
     void deleteEquipment(Long equipmentId);
 
-    EquipmentResponse editEquipment(Long equipmentId, String equipmentName, MultipartFile image) throws IOException;
+    EquipmentResponse editEquipment(Long equipmentId, String equipmentName, String brandName, String description, MultipartFile image) throws IOException;
 
     Equipment findById(Long equipmentId);
 

@@ -12,5 +12,7 @@ public class EquipmentCreateRequest
 {
     @NotBlank(message = "Equipment name must not be blank")
     private String equipmentName;
+    private String brandName;
+    private String description;
     private String imageUrl;
 }

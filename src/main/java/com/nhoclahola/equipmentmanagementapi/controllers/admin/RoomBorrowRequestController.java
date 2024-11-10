@@ -53,4 +53,11 @@ public class RoomBorrowRequestController
         return ResponseEntity.status(HttpStatus.OK)
                 .body(roomBorrowRequestService.findAllLatestBorrowRequest(pageNumber - 1));
     }
+
+    @GetMapping("/room-borrow-request/count-pending")
+    public ResponseEntity<Long> countPendingBorrowRequest()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomBorrowRequestService.countPendingBorrowRequest());
+    }
 }

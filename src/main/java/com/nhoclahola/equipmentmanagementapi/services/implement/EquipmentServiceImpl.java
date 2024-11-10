@@ -47,7 +47,7 @@ public class EquipmentServiceImpl implements EquipmentService
     }
 
     @Override
-    public EquipmentResponse createEquipment(String equipmentName, MultipartFile image) throws IOException
+    public EquipmentResponse createEquipment(String equipmentName, String brandName, String description, MultipartFile image) throws IOException
     {
         if (equipmentRepository.existsByEquipmentName(equipmentName))
             throw new EquipmentNameAlreadyExistException();
@@ -56,6 +56,8 @@ public class EquipmentServiceImpl implements EquipmentService
             imageUrl = fileUploadService.upload(EQUIPMENT_DIR, image);
         Equipment equipment = Equipment.builder()
                 .equipmentName(equipmentName)
+                .brandName(brandName)
+                .description(description)
                 .imageUrl(imageUrl)
                 .build();
         return equipmentMapper.toEquipmentResponse(equipmentRepository.save(equipment));
@@ -70,13 +72,15 @@ public class EquipmentServiceImpl implements EquipmentService
     }
 
     @Override
-    public EquipmentResponse editEquipment(Long equipmentId, String equipmentName, MultipartFile image) throws IOException
+    public EquipmentResponse editEquipment(Long equipmentId, String equipmentName, String brandName, String description, MultipartFile image) throws IOException
     {
-        if (equipmentRepository.existsByEquipmentName(equipmentName))
+        if (equipmentRepository.existsByEquipmentNameAndEquipmentIdNot(equipmentName, equipmentId))
             throw new EquipmentNameAlreadyExistException();
         Equipment equipment = equipmentRepository.findById(equipmentId)
                 .orElseThrow(() -> new EquipmentNotFoundException());
         equipment.setEquipmentName(equipmentName);
+        equipment.setBrandName(brandName);
+        equipment.setDescription(description);
         if (image != null && image.getContentType().startsWith("image"))
         {
             fileUploadService.deleteFile(equipment.getImageUrl());

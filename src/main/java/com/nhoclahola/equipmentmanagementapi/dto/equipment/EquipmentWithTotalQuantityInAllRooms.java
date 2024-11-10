@@ -13,6 +13,8 @@ public class EquipmentWithTotalQuantityInAllRooms
 {
     private Long equipmentId;
     private String equipmentName;
+    private String brandName;
+    private String description;
     private String imageUrl;
     private Long totalQuantity;
     private Long remainQuantity;  // Số lượng còn lại sau khi mượn

@@ -16,5 +16,7 @@ public class EquipmentResponse
 {
     private String equipmentId;
     private String equipmentName;
+    private String brandName;
+    private String description;
     private String imageUrl;
 }

@@ -30,6 +30,11 @@ public class RoomEquipmentServiceImpl implements RoomEquipmentService
     private final RoomService roomService;
     private final EquipmentService equipmentService;
 
+    @Override
+    public long countAll()
+    {
+        return roomEquipmentRepository.count();
+    }
 
     @Override
     public List<RoomEquipmentWithRemainQuantityResponse> findByRoomId(Long roomId)

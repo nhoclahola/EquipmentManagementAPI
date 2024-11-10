@@ -2,11 +2,14 @@ package com.nhoclahola.equipmentmanagementapi.services.implement;
 
 import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.request.RoomBorrowRequestRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.response.RoomBorrowRequestResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.response.UserInfoRoomBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.RequestStatus;
 import com.nhoclahola.equipmentmanagementapi.entities.RoomBorrowRequest;
+import com.nhoclahola.equipmentmanagementapi.entities.User;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasBeenProcessedException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestHasNotBeenApprovedException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.BorrowRequestNotFoundException;
+import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.RoomHasBeenBorrowedException;
 import com.nhoclahola.equipmentmanagementapi.mapper.RoomBorrowRequestMapper;
 import com.nhoclahola.equipmentmanagementapi.repositories.RoomBorrowRequestRepository;
 import com.nhoclahola.equipmentmanagementapi.services.RoomBorrowRequestService;
@@ -16,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,12 +37,15 @@ public class RoomBorrowRequestServiceImpl implements RoomBorrowRequestService
     @Override
     public RoomBorrowRequestResponse createRoomBorrowRequest(RoomBorrowRequestRequest request)
     {
+        // Check user
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
         // Kiểm tra phòng có đang được mượn không?
         boolean isBorrowed = roomBorrowRequestRepository.isRoomBeingBorrowed(request.getRoomId());
         if (isBorrowed)
-            throw new RuntimeException("Phòng đang được mượn");
+            throw new RoomHasBeenBorrowedException();
         RoomBorrowRequest borrowRequest = RoomBorrowRequest.builder()
-                .user(userService.findById(request.getUserId()))
+                .user(user)
                 .room(roomService.findById(request.getRoomId())) // Không cần tìm lại Room vì roomId đã có
                 .requestDate(LocalDate.now())  // Ngày tạo yêu cầu
                 .returnDate(request.getReturnDate())  // Ngày dự kiến trả
@@ -110,8 +117,23 @@ public class RoomBorrowRequestServiceImpl implements RoomBorrowRequestService
     @Override
     public List<RoomBorrowRequestResponse> findAllLatestBorrowRequest(int pageNumber)
     {
-        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("requestDate").descending());
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
         List<RoomBorrowRequest> borrowRequestList = roomBorrowRequestRepository.findAll(pageable).stream().toList();
         return roomBorrowRequestMapper.toRoomBorrowRequestResponseList(borrowRequestList);
+    }
+
+    @Override
+    public UserInfoRoomBorrowRequestResponse findUserInfoBorrowRequest()
+    {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var i = roomBorrowRequestRepository.findUserInfoBorrowRequest(username);
+        System.out.println(i.getUserId());
+        return i;
+    }
+
+    @Override
+    public long countPendingBorrowRequest()
+    {
+        return roomBorrowRequestRepository.countPendingRoomBorrowRequest();
     }
 }

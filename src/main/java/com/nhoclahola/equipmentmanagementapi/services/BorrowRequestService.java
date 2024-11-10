@@ -2,6 +2,7 @@ package com.nhoclahola.equipmentmanagementapi.services;
 
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.request.BorrowRequestRequest;
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.BorrowRequestResponse;
+import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.UserInfoBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.BorrowRequest;
 
 import java.time.LocalDateTime;
@@ -24,4 +25,8 @@ public interface BorrowRequestService
     List<BorrowRequestResponse> findAllBorrowRequest(int pageNumber);
 
     List<BorrowRequestResponse> findAllLatestBorrowRequest(int pageNumber);
+
+    UserInfoBorrowRequestResponse findUserInfoBorrowRequest();
+
+    long countPendingBorrowRequest();
 }

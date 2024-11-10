@@ -19,6 +19,12 @@ public class Room
     private Long roomId;
     private String roomName;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RoomEquipment> roomEquipments;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BorrowRequest> borrowRequests;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RoomBorrowRequest> roomBorrowRequests;
 }
