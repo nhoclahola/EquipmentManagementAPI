@@ -2,6 +2,8 @@ package com.nhoclahola.equipmentmanagementapi.repositories;
 
 import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.response.UserInfoRoomBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.RoomBorrowRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,4 +32,9 @@ public interface RoomBorrowRequestRepository extends JpaRepository<RoomBorrowReq
             "FROM RoomBorrowRequest br " +
             "WHERE br.status = RequestStatus.PENDING")
     long countPendingRoomBorrowRequest();
+
+    @Query("SELECT br " +
+            "FROM RoomBorrowRequest br " +
+            "WHERE br.user.username = :username")
+    Page<RoomBorrowRequest> findUsersRoomBorrowRequests(@Param("username") String username, Pageable pageable);
 }

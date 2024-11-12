@@ -2,12 +2,12 @@ package com.nhoclahola.equipmentmanagementapi.repositories;
 
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.UserInfoBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.BorrowRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface BorrowRequestRepository extends JpaRepository<BorrowRequest, Long>
@@ -28,10 +28,15 @@ public interface BorrowRequestRepository extends JpaRepository<BorrowRequest, Lo
             "LEFT JOIN BorrowRequest br ON br.user.userId = u.userId " +
             "WHERE u.username = :username " +
             "GROUP BY u.userId")
-    UserInfoBorrowRequestResponse findUserInfoBorrowRequest(String username);
+    UserInfoBorrowRequestResponse findUserInfoBorrowRequest(@Param("username") String username);
 
     @Query("SELECT COUNT(br) " +
             "FROM BorrowRequest br " +
             "WHERE br.status = RequestStatus.PENDING")
     long countPendingBorrowRequest();
+
+    @Query("SELECT br " +
+            "FROM BorrowRequest br " +
+            "WHERE br.user.username = :username")
+    Page<BorrowRequest> findUsersBorrowRequests(@Param("username") String username, Pageable pageable);
 }

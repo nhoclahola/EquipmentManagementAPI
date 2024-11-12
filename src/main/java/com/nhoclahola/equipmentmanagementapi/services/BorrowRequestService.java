@@ -4,8 +4,8 @@ import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.request.BorrowRe
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.BorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.dto.borrow_request.response.UserInfoBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.BorrowRequest;
+import org.springframework.data.domain.Page;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BorrowRequestService
@@ -29,4 +29,6 @@ public interface BorrowRequestService
     UserInfoBorrowRequestResponse findUserInfoBorrowRequest();
 
     long countPendingBorrowRequest();
+
+    Page<BorrowRequestResponse> findUsersBorrowRequests(int pageNumber);
 }

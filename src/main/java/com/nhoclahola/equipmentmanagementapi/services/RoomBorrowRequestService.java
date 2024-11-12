@@ -4,6 +4,7 @@ import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.request.Roo
 import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.response.RoomBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.dto.room_borrow_request.response.UserInfoRoomBorrowRequestResponse;
 import com.nhoclahola.equipmentmanagementapi.entities.RoomBorrowRequest;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -29,4 +30,6 @@ public interface RoomBorrowRequestService
     UserInfoRoomBorrowRequestResponse findUserInfoBorrowRequest();
 
     long countPendingBorrowRequest();
+
+    Page<RoomBorrowRequestResponse> findUsersRoomBorrowRequests(int pageNumber);
 }

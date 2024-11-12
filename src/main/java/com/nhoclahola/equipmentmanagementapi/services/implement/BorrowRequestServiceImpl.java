@@ -15,6 +15,7 @@ import com.nhoclahola.equipmentmanagementapi.mapper.BorrowRequestMapper;
 import com.nhoclahola.equipmentmanagementapi.repositories.BorrowRequestRepository;
 import com.nhoclahola.equipmentmanagementapi.services.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -153,5 +154,14 @@ public class BorrowRequestServiceImpl implements BorrowRequestService
     public long countPendingBorrowRequest()
     {
         return borrowRequestRepository.countPendingBorrowRequest();
+    }
+
+    @Override
+    public Page<BorrowRequestResponse> findUsersBorrowRequests(int pageNumber)
+    {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
+        Page<BorrowRequest> borrowRequests = borrowRequestRepository.findUsersBorrowRequests(username, pageable);
+        return borrowRequestMapper.toPageBorrowRequestResponse(borrowRequests);
     }
 }

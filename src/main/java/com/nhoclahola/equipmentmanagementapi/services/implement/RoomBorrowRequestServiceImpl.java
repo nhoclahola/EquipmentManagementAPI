@@ -16,6 +16,7 @@ import com.nhoclahola.equipmentmanagementapi.services.RoomBorrowRequestService;
 import com.nhoclahola.equipmentmanagementapi.services.RoomService;
 import com.nhoclahola.equipmentmanagementapi.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -133,5 +134,14 @@ public class RoomBorrowRequestServiceImpl implements RoomBorrowRequestService
     public long countPendingBorrowRequest()
     {
         return roomBorrowRequestRepository.countPendingRoomBorrowRequest();
+    }
+
+    @Override
+    public Page<RoomBorrowRequestResponse> findUsersRoomBorrowRequests(int pageNumber)
+    {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
+        Page<RoomBorrowRequest> roomBorrowRequests = roomBorrowRequestRepository.findUsersRoomBorrowRequests(username, pageable);
+        return roomBorrowRequestMapper.toPageRoomBorrowRequestResponse(roomBorrowRequests);
     }
 }
