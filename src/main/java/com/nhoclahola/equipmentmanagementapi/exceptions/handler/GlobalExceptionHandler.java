@@ -2,11 +2,9 @@ package com.nhoclahola.equipmentmanagementapi.exceptions.handler;
 
 import com.nhoclahola.equipmentmanagementapi.exceptions.PageNumberNotValidException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.auth.InvalidUserNameOrPasswordException;
+import com.nhoclahola.equipmentmanagementapi.exceptions.auth.WrongRoleException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.borrow_request.*;
-import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentAlreadyExistsInRoomException;
-import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentNameAlreadyExistException;
-import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentNotExistsInRoomException;
-import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentNotFoundException;
+import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.*;
 import com.nhoclahola.equipmentmanagementapi.exceptions.room.RoomNameAlreadyExistsException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.room.RoomNotFountException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.user.UserNotFoundException;
@@ -24,6 +22,14 @@ public class GlobalExceptionHandler
     {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)  // 401
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(WrongRoleException.class)
+    public ResponseEntity<String> handleWrongRole(WrongRoleException ex)
+    {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)  // 403
                 .body(ex.getMessage());
     }
 
@@ -101,6 +107,14 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(NotEnoughEquipmentAvailableException.class)
     public ResponseEntity<String> handleNotEnoughEquipmentAvailable(NotEnoughEquipmentAvailableException ex)
+    {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CantEditOrRemoveException.class)
+    public ResponseEntity<String> handleCantEditOrRemove(CantEditOrRemoveException ex)
     {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)

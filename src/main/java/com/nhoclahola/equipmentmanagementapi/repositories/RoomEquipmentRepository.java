@@ -107,4 +107,12 @@ public interface RoomEquipmentRepository extends JpaRepository<RoomEquipment, Lo
                 WHERE re.room.roomName LIKE %:query% OR re.equipment.equipmentName LIKE %:query%
             """)
     Page<RoomEquipmentWithRemainQuantity> searchRoomEquipmentsWithRemainQuantity(@Param("query") String query, Pageable pageable);
+
+    @Query("SELECT COALESCE(SUM(br.quantity), 0) " +
+            "FROM BorrowRequest br " +
+            "WHERE br.room.roomId = :roomId " +
+            "AND br.equipment.id = :equipmentId " +
+            "AND br.status = 'APPROVED' " +
+            "AND br.isReturned = false")
+    Long findEquipmentInRoomWithTotalBorrows(@Param("roomId") Long roomId, @Param("equipmentId") Long equipmentId);
 }

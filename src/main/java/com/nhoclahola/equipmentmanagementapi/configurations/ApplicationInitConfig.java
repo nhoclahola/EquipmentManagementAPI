@@ -24,6 +24,7 @@ public class ApplicationInitConfig
                         .username("admin")
                         .password("123456")
                         .fullName("Administrator")
+                        .gender(true)
                         .role(Role.ADMIN)
                         .build();
                 userRepository.save(user);

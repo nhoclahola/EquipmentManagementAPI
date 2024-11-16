@@ -71,4 +71,13 @@ public class RoomEquipmentController
         return ResponseEntity.status(HttpStatus.OK)
                 .body(roomEquipmentService.countAll());
     }
+
+    @GetMapping("/rooms/{roomId}/borrow-count/{equipmentId}")
+    public ResponseEntity<Long> getEquipmentInRoomWithTotalBorrows(@PathVariable Long roomId,
+                                                      @PathVariable Long equipmentId)
+    {
+        Long quantity = roomEquipmentService.findEquipmentInRoomWithTotalBorrows(roomId, equipmentId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(quantity);
+    }
 }

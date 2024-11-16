@@ -28,4 +28,6 @@ public interface RoomEquipmentService
     Page<RoomEquipmentWithRemainQuantityResponse> findAllRoomEquipmentsWithRemainQuantity(int pageNumber);
 
     Page<RoomEquipmentWithRemainQuantityResponse> searchRoomEquipmentsWithRemainQuantity(String query, int pageNumber);
+
+    Long findEquipmentInRoomWithTotalBorrows(Long roomId, Long equipmentId);
 }

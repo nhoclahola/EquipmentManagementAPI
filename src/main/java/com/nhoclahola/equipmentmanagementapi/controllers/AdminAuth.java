@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user-auth")
-public class UserAuth
+@RequestMapping("/admin-auth")
+public class AdminAuth
 {
     private final AuthService authService;
 
@@ -22,6 +22,6 @@ public class UserAuth
     public ResponseEntity<String> login(@RequestBody @Valid UserLoginRequest request)
     {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(authService.userAuthenticate(request));
+                .body(authService.adminAuthenticate(request));
     }
 }

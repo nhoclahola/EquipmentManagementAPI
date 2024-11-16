@@ -6,6 +6,7 @@ import com.nhoclahola.equipmentmanagementapi.dto.room_equipment.response.RoomEqu
 import com.nhoclahola.equipmentmanagementapi.entities.Equipment;
 import com.nhoclahola.equipmentmanagementapi.entities.Room;
 import com.nhoclahola.equipmentmanagementapi.entities.RoomEquipment;
+import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.CantEditOrRemoveException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentAlreadyExistsInRoomException;
 import com.nhoclahola.equipmentmanagementapi.exceptions.equipment.EquipmentNotExistsInRoomException;
 import com.nhoclahola.equipmentmanagementapi.mapper.RoomEquipmentMapper;
@@ -69,6 +70,9 @@ public class RoomEquipmentServiceImpl implements RoomEquipmentService
     {
         RoomEquipment roomEquipment = roomEquipmentRepository.findByRoomRoomIdAndEquipmentEquipmentId(roomId, equipmentId)
                 .orElseThrow(() -> new EquipmentNotExistsInRoomException());
+        Long totalBorrowedQuantity = roomEquipmentRepository.findEquipmentInRoomWithTotalBorrows(roomId, equipmentId);
+        if (totalBorrowedQuantity > quantity)
+            throw new CantEditOrRemoveException("Không thể chỉnh sửa số lượng ít hơn tổng số lượng đang được mượn");
         roomEquipment.setQuantity(quantity);
         return roomEquipmentMapper.toRoomEquipmentResponse(roomEquipmentRepository.save(roomEquipment));
     }
@@ -78,6 +82,9 @@ public class RoomEquipmentServiceImpl implements RoomEquipmentService
     {
         RoomEquipment roomEquipment = roomEquipmentRepository.findByRoomRoomIdAndEquipmentEquipmentId(roomId, equipmentId)
                 .orElseThrow(() -> new EquipmentNotExistsInRoomException());
+        Long totalBorrowedQuantity = roomEquipmentRepository.findEquipmentInRoomWithTotalBorrows(roomId, equipmentId);
+        if (totalBorrowedQuantity > 0)
+            throw new CantEditOrRemoveException("Thiết bị tại phòng này đang có người mượn chưa trả");
         roomEquipmentRepository.delete(roomEquipment);
     }
 
@@ -109,5 +116,11 @@ public class RoomEquipmentServiceImpl implements RoomEquipmentService
         Pageable pageable = PageRequest.of(pageNumber, 10);
         Page<RoomEquipmentWithRemainQuantity> roomEquipmentList = roomEquipmentRepository.searchRoomEquipmentsWithRemainQuantity(query, pageable);
         return roomEquipmentMapper.toPageRoomEquipmentWithRemainQuantityResponse(roomEquipmentList);
+    }
+
+    @Override
+    public Long findEquipmentInRoomWithTotalBorrows(Long roomId, Long equipmentId)
+    {
+        return roomEquipmentRepository.findEquipmentInRoomWithTotalBorrows(roomId, equipmentId);
     }
 }

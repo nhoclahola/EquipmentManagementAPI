@@ -4,5 +4,7 @@ import com.nhoclahola.equipmentmanagementapi.dto.auth.UserLoginRequest;
 
 public interface AuthService
 {
-    public abstract String authenticate(UserLoginRequest request);
+    public abstract String userAuthenticate(UserLoginRequest request);
+
+    String adminAuthenticate(UserLoginRequest request);
 }

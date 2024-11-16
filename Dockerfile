@@ -22,6 +22,8 @@ WORKDIR /app
 
 # Copy the built jar file from the previous stage into this image
 COPY --from=build /app/build/libs/EquipmentManagementAPI-0.0.1-SNAPSHOT.jar app.jar
+# Copy the "uploads" folder from the host machine into the container
+COPY uploads ./uploads
 
 # Define the command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
