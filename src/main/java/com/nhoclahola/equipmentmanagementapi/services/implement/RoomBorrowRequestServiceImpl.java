@@ -64,7 +64,7 @@ public class RoomBorrowRequestServiceImpl implements RoomBorrowRequestService
             throw new BorrowRequestHasBeenProcessedException();
         boolean isBorrowed = roomBorrowRequestRepository.isRoomBeingBorrowed(borrowRequest.getRoom().getRoomId());
         if (isBorrowed)
-            throw new RuntimeException("Phòng đang được mượn");
+            throw new RoomHasBeenBorrowedException();
         else
         {
             borrowRequest.setStatus(RequestStatus.APPROVED);
@@ -143,5 +143,11 @@ public class RoomBorrowRequestServiceImpl implements RoomBorrowRequestService
         Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
         Page<RoomBorrowRequest> roomBorrowRequests = roomBorrowRequestRepository.findUsersRoomBorrowRequests(username, pageable);
         return roomBorrowRequestMapper.toPageRoomBorrowRequestResponse(roomBorrowRequests);
+    }
+
+    @Override
+    public long countBorrowedRooms()
+    {
+        return roomBorrowRequestRepository.countBorrowedRooms();
     }
 }

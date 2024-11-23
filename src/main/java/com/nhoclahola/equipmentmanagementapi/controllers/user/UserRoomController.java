@@ -38,4 +38,11 @@ public class UserRoomController
         return ResponseEntity.status(HttpStatus.OK)
                 .body(roomService.searchRoomsPage(query, pageNumber - 1));
     }
+
+    @GetMapping("/rooms/count")
+    public ResponseEntity<Long> countAllRooms()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomService.count());
+    }
 }

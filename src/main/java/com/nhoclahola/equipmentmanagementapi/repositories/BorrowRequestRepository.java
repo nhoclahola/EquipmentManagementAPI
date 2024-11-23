@@ -39,4 +39,11 @@ public interface BorrowRequestRepository extends JpaRepository<BorrowRequest, Lo
             "FROM BorrowRequest br " +
             "WHERE br.user.username = :username")
     Page<BorrowRequest> findUsersBorrowRequests(@Param("username") String username, Pageable pageable);
+
+    @Query("""
+        SELECT SUM(br.quantity)
+        FROM BorrowRequest br
+        WHERE br.status = 'APPROVED' AND br.isReturned = false
+    """)
+    long findTotalBorrowedRoomEquipmentQuantity();
 }

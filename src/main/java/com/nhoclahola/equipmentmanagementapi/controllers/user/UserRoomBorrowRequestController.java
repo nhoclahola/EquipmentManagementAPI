@@ -40,4 +40,11 @@ public class UserRoomBorrowRequestController
         return ResponseEntity.status(HttpStatus.OK)
                 .body(roomBorrowRequestService.findUserInfoBorrowRequest());
     }
+
+    @GetMapping("/room-borrow-request/borrowed/count")
+    public ResponseEntity<Long> countBorrowedRooms()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomBorrowRequestService.countBorrowedRooms());
+    }
 }

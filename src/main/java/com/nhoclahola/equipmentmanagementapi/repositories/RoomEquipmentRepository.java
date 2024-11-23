@@ -115,4 +115,7 @@ public interface RoomEquipmentRepository extends JpaRepository<RoomEquipment, Lo
             "AND br.status = 'APPROVED' " +
             "AND br.isReturned = false")
     Long findEquipmentInRoomWithTotalBorrows(@Param("roomId") Long roomId, @Param("equipmentId") Long equipmentId);
+
+    @Query("SELECT SUM(re.quantity) FROM RoomEquipment re")
+    long findTotalRoomEquipmentQuantity();
 }

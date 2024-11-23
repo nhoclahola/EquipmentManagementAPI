@@ -48,4 +48,11 @@ public class UserEquipmentController
         return ResponseEntity.status(HttpStatus.OK)
                 .body(roomEquipmentService.searchRoomEquipmentsWithRemainQuantity(query, pageNumber - 1));
     }
+
+    @GetMapping("/equipments/all-rooms-count")
+    public ResponseEntity<Long> getTotalEquipmentInAllRoomsQuantity()
+    {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomEquipmentService.findTotalRoomEquipmentQuantity());
+    }
 }

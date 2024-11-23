@@ -123,4 +123,10 @@ public class RoomEquipmentServiceImpl implements RoomEquipmentService
     {
         return roomEquipmentRepository.findEquipmentInRoomWithTotalBorrows(roomId, equipmentId);
     }
+
+    @Override
+    public long findTotalRoomEquipmentQuantity()
+    {
+        return roomEquipmentRepository.findTotalRoomEquipmentQuantity();
+    }
 }

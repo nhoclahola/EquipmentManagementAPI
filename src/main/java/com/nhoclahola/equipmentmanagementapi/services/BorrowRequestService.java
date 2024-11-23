@@ -31,4 +31,6 @@ public interface BorrowRequestService
     long countPendingBorrowRequest();
 
     Page<BorrowRequestResponse> findUsersBorrowRequests(int pageNumber);
+
+    long findTotalBorrowedRoomEquipmentQuantity();
 }

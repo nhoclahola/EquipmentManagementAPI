@@ -164,4 +164,10 @@ public class BorrowRequestServiceImpl implements BorrowRequestService
         Page<BorrowRequest> borrowRequests = borrowRequestRepository.findUsersBorrowRequests(username, pageable);
         return borrowRequestMapper.toPageBorrowRequestResponse(borrowRequests);
     }
+
+    @Override
+    public long findTotalBorrowedRoomEquipmentQuantity()
+    {
+        return borrowRequestRepository.findTotalBorrowedRoomEquipmentQuantity();
+    }
 }

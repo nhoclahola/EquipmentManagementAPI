@@ -37,4 +37,9 @@ public interface RoomBorrowRequestRepository extends JpaRepository<RoomBorrowReq
             "FROM RoomBorrowRequest br " +
             "WHERE br.user.username = :username")
     Page<RoomBorrowRequest> findUsersRoomBorrowRequests(@Param("username") String username, Pageable pageable);
+
+    @Query("SELECT COUNT(DISTINCT r.room.roomId) " +
+            "FROM RoomBorrowRequest r " +
+            "WHERE r.status = 'APPROVED' AND r.isReturned = false")
+    long countBorrowedRooms();
 }

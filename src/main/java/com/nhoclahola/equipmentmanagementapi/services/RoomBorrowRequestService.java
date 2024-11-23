@@ -32,4 +32,6 @@ public interface RoomBorrowRequestService
     long countPendingBorrowRequest();
 
     Page<RoomBorrowRequestResponse> findUsersRoomBorrowRequests(int pageNumber);
+
+    long countBorrowedRooms();
 }
