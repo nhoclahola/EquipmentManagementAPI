@@ -1,2 +1,0 @@
-sudo docker build -t session-hijacking .
-sudo docker run -d --env-file .env --name session-hijacking-container session-hijacking
